@@ -347,60 +347,60 @@ int FindPath(const int nStartX, const int nStartY,
 	if (nStartX == nTargetX && nStartY == nTargetY) {
 		if (nOutBufferSize > 0) // Arabellek boyutu en az 1 ise hedefi yaz
 		  *pOutBuffer = map.Offset(nTargetX, nTargetY);
-		return 0; // Baþlangýç ve hedef aynýysa yol uzunluðu 0
+		return 0; // Baï¿½langï¿½ï¿½ ve hedef aynï¿½ysa yol uzunluï¿½u 0
 	}
 
-	int rv = -1; // Yol bulunamadý varsayýmý
+	int rv = -1; // Yol bulunamadï¿½ varsayï¿½mï¿½
 
-	NodeQueue queue; // Açýk küme (Open Set) - deðerlendirilecek düðümler
-	WeakNodeSet allNodes; // Oluþturulan tüm düðümleri takip etme
-	// Baþlangýç düðümünü oluþtur ve kuyruða ekle
+	NodeQueue queue; // Aï¿½ï¿½k kï¿½me (Open Set) - deï¿½erlendirilecek dï¿½ï¿½ï¿½mler
+	WeakNodeSet allNodes; // Oluï¿½turulan tï¿½m dï¿½ï¿½ï¿½mleri takip etme
+	// Baï¿½langï¿½ï¿½ dï¿½ï¿½ï¿½mï¿½nï¿½ oluï¿½tur ve kuyruï¿½a ekle
 	PNode startNode = Node::Spawn(map, nStartX, nStartY, PNode(), queue, allNodes);
 	queue.insert(startNode);
 	size_t mem_use;
 
 	const int target = map.Offset(nTargetX, nTargetY);
 
-	std::string input; // Adým adým ilerlemek için kullanýcý girdisi
+	std::string input; // Adï¿½m adï¿½m ilerlemek iï¿½in kullanï¿½cï¿½ girdisi
 
-	// Ana arama döngüsü: Kuyruk boþ olana veya hedef bulunana kadar devam et
+	// Ana arama dï¿½ngï¿½sï¿½: Kuyruk boï¿½ olana veya hedef bulunana kadar devam et
 	while(!queue.empty()) {
 		std::cout << "------------------------------------------------------------------------" << std::endl;
-		// Kuyruðun baþýndaki (en düþük maliyetli) düðümü al
+		// Kuyruï¿½un baï¿½ï¿½ndaki (en dï¿½ï¿½ï¿½k maliyetli) dï¿½ï¿½ï¿½mï¿½ al
 		PNode curNode(*queue.begin());
 
-		// Eðer mevcut düðüm hedef ise
+		// Eï¿½er mevcut dï¿½ï¿½ï¿½m hedef ise
 		if (curNode->Offset() == target) {
-			rv = curNode->GCost(); // Yol uzunluðunu al
-			// Yolu geriye doðru izleyerek pOutBuffer'a kaydet
+			rv = curNode->GCost(); // Yol uzunluï¿½unu al
+			// Yolu geriye doï¿½ru izleyerek pOutBuffer'a kaydet
 			PNode n = curNode;
-			int i = curNode->GCost() - 1; // Arabellek indeksi (hedef dahil, baþlangýç hariç)
+			int i = curNode->GCost() - 1; // Arabellek indeksi (hedef dahil, baï¿½langï¿½ï¿½ hariï¿½)
 			
 			//std::cout << "------------------------------------------------" << std::endl;
             std::cout << "Hedef bulundu! ("
                       << map.X(curNode->Offset()) << ", "
                       << map.Y(curNode->Offset()) << ")" << std::endl;
 
-			// Eðer hedef baþlangýç deðilse yolu kaydet
+			// Eï¿½er hedef baï¿½langï¿½ï¿½ deï¿½ilse yolu kaydet
 			if (rv > 0) {
-				while (n->Parent() && i >= 0) { // Baþlangýca veya arabelleðin sonuna kadar git
+				while (n->Parent() && i >= 0) { // Baï¿½langï¿½ca veya arabelleï¿½in sonuna kadar git
 					pOutBuffer[i--] = n->Offset();
-					n = n->Parent(); // Bir üst düðüme geç
+					n = n->Parent(); // Bir ï¿½st dï¿½ï¿½ï¿½me geï¿½
 				}
 			}
-			break; // Hedef bulundu, döngüyü sonlandýr
+			break; // Hedef bulundu, dï¿½ngï¿½yï¿½ sonlandï¿½r
 		}
 
-		PNode nextNode(nullptr); // Geniþletilecek bir sonraki komþu düðüm
+		PNode nextNode(nullptr); // Geniï¿½letilecek bir sonraki komï¿½u dï¿½ï¿½ï¿½m
 
-		// Eðer mevcut düðüm geniþletilebilir durumdaysa (maliyet sonsuz deðilse)
+		// Eï¿½er mevcut dï¿½ï¿½ï¿½m geniï¿½letilebilir durumdaysa (maliyet sonsuz deï¿½ilse)
 		if (curNode->FCost() < std::numeric_limits<float>::max()) {
-            // *** EKLENEN KISIM: Hangi düðümün geniþletileceðini yazdýr ***
+            // *** EKLENEN KISIM: Hangi dï¿½ï¿½ï¿½mï¿½n geniï¿½letileceï¿½ini yazdï¿½r ***
             std::cout << "En iyi dugum genisletiliyor: ("
                       << map.X(curNode->Offset()) << ", "
                       << map.Y(curNode->Offset()) << ")" << std::endl;
             // ************************************************************
-			nextNode = curNode->ExpandNext(map, queue); // Düðümün bir sonraki komþusunu geniþlet
+			nextNode = curNode->ExpandNext(map, queue); // Dï¿½ï¿½ï¿½mï¿½n bir sonraki komï¿½usunu geniï¿½let
 		}
 
 
@@ -457,13 +457,13 @@ int FindPath(const int nStartX, const int nStartY,
              std::cout << "En iyi dugum ("
                        << map.X(curNode->Offset()) << ", "
                        << map.Y(curNode->Offset()) << ") genisletiliyor, ancak yeni komsu dugum bulunamadi/eklenemedi." << std::endl;
-             Paint(map, curNode, startNode); // Yine de durumu görselleþtir
+             Paint(map, curNode, startNode); // Yine de durumu gï¿½rselleï¿½tir
              std::cout << "Toplam Dugum: " << allNodes.size() << ", Kuyrukta (Yaprak): " << queue.size() << std::endl;
 			 std::cout << "Mevcut Yol Uzunlugu: " << curNode->GCost() << "/" << nOutBufferSize << std::endl;
 			 std::cout << "Bellek Kullanimi: " << float(mem_use)/1000 << " kB."
 					<< std::endl << std::endl;
              if (input != "f") {
-				std::cout << "Devam etmek için Enter'a basin, bitirmek için \"f\" yazýp Enter'a basin: ";
+				std::cout << "Devam etmek icin Enter'a basin, bitirmek icin \"f\" yazip Enter'a basin: ";
 				std::getline(std::cin, input);
 			 }
             // ************************************************************
@@ -487,7 +487,7 @@ int FindPath(const int nStartX, const int nStartY,
 			 std::cout << "Bellek Kullanimi: " << float(mem_use)/1000 << " kB."
 					<< std::endl << std::endl;
             if (input != "f") {
-				std::cout << "Devam etmek için Enter'a basin, bitirmek için \"f\" yazip Enter'a basin: ";
+				std::cout << "Devam etmek icin Enter'a basin, bitirmek icin \"f\" yazip Enter'a basin: ";
 				std::getline(std::cin, input);
 			 }
 		}

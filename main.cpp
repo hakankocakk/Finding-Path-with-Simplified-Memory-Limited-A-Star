@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 	int width = 16;
 	int height = 8;
 	std::vector<int> res;
-	res.resize(600);
+	res.resize(128);
 
 	int start_x = 0;
 	int start_y = 0;
